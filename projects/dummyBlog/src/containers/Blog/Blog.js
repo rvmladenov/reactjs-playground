@@ -1,60 +1,32 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import { Route, NavLink, Switch } from 'react-router-dom';
 
-import Post from '../../components/Post/Post';
-import FullPost from '../../components/FullPost/FullPost';
-import NewPost from '../../components/NewPost/NewPost';
 import './Blog.css';
+import Posts from '../../containers/Posts/Posts';
+import NewPost from '../NewPost/NewPost';
+import FullPost from '../FullPost/FullPost';
 
 class Blog extends Component {
-    state = {
-        posts: [],
-        selectedPostId: null
-    };
-
-    componentDidMount() {
-        axios
-            .get('https://jsonplaceholder.typicode.com/posts')
-            .then(response => {
-                const slicedPosts = response.data.slice(0, 4);
-                const updatedPosts = slicedPosts.map(post => {
-                    return {
-                        ...post,
-                        author: 'rvm'
-                    };
-                })
-                this.setState({posts: updatedPosts});
-            })
-    }
-
-    postSelectedHandler = (id) => {
-        this.setState({selectedPostId: id});
-    };
-
     render () {
-
-        const posts = this.state.posts.map(post => {
-            return <Post
-                key={post.id}
-                title={post.title}
-                author={post.author}
-                clicked={() => {
-                    console.log('clicked');
-                    this.postSelectedHandler(post.id) 
-                }} />
-        });
-
         return (
-            <div>
-                <section className="Posts">
-                    {posts}
-                </section>
-                <section>
-                    <FullPost id={this.state.selectedPostId} />
-                </section>
-                <section>
-                    <NewPost />
-                </section>
+            <div className="Blog">
+                <header>
+                    <nav>
+                        <ul>
+                            <li><NavLink exact to='/'>Home</NavLink></li>
+                            <li><NavLink to={{
+                                pathname: '/new-post'
+                            }}>New Post</NavLink></li>
+                        </ul>
+                    </nav>
+                </header>
+
+                <Switch>
+                    <Route path="/new-post" component={NewPost} />
+                    <Route path="/:id" exact component={FullPost} />
+                    <Route path="/" component={Posts} />
+                </Switch>
+                
             </div>
         );
     }
