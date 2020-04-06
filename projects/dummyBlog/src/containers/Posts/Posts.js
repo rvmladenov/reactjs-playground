@@ -31,7 +31,7 @@ class Posts extends Component {
     render() {
 
         const posts = this.state.posts.map(post => {
-            return <Link to={'/' + post.id} key={post.id}><Post
+            return <Link to={'/posts/' + post.id} key={post.id}><Post
                 title={post.title}
                 author={post.author}
                 clicked={() => {
