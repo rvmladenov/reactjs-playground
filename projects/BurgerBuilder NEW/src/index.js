@@ -2,14 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, compose } from 'redux';
 
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import reducer from './store/reducer';
+import burgerBuilderReducer from './store/reducers/burgerBuilder';
+import orderReducer from './store/reducers/order';
+import { combineReducers } from 'redux';
 
-const store = createStore(reducer);
+const store = createStore(combineReducers({
+        burgerBuilderReducer: burgerBuilderReducer,
+        orderReducer: orderReducer
+    }),
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose);
 
 const app = (
     <Provider store={store}>
